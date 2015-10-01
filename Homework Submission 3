@@ -1,0 +1,53 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Oct  1 10:21:37 2015
+
+@author: Jon
+"""
+
+#tell python that i'm going to import something, in this case a csv
+import csv
+#with open means open this file, as f so we just named the file as f
+with open('/Users/Jon/Desktop/Data Science/DAT-DC-9/data/chipotle.tsv', 'rU') as f:
+#naming the variable data as 
+    data = [row for row in csv.reader(f, delimiter='\t')]
+
+#header will get the variable data row 0 but that is it
+header = data[0]
+
+#data will get the previous variable named data row 1 and everything after it
+data = data[1:]
+
+# add up the numbers in position 4 for row 
+#for data but not the first or last position in 4
+prices = sum(float(row[4][1:-1]) for row in data)
+#find the length of the unqiue set that is in position 0 for row in data
+unique_order_ids = len(set([row[0] for row in data]))
+#simplifed the final equation from the example given 
+#and because the question did not ask for me to round my answer
+prices/unique_order_ids
+#here it is after I looked at the instructors answer
+round(prices/unique_order_ids, 2)
+
+#my code works but doesnt match the instructors 
+#created a uniue set for all choice_descriptions if they were also matching
+#canned soda or canned soft drink in position 2
+sodas = set(row[3] for row in data if ("Canned Soda" or "Canned Soft Drink") in row[2])
+
+
+# after reviewing the instructors answer, his looks easier to read than mine
+toppings = sum(row[3].count(',')+1 for row in data if 'Burrito' in row [2])
+burritos = sum(row[2].count('Burrito') for row in data if 'Burrito' in row [2])
+toppings/burritos
+
+
+chips = {}
+for row in data:
+    if 'Chips' in row[2]:
+        if row[2] not in chips:
+            chips[row[2]] = int(row[1])
+        else:
+            chips[row[2]] += int(row[1])      
+chips
+            
+            
